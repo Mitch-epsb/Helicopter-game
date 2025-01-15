@@ -21,6 +21,9 @@ function drawStart() {
   // Helicopter
   ctx.drawImage(heliImg, heli.x, heli.y);
 
+  //Power Up
+  ctx.drawImage(PU, power.x, power.y, power.w, power.h);
+
   // Start Text
   ctx.font = "40px Consolas";
   ctx.fillStyle = "lightblue";
@@ -37,6 +40,8 @@ function rungame() {
   movewalls();
   collCheck();
   distance();
+  powerup();
+  blockevent();
   //GAME
   drawGame();
 }
@@ -84,10 +89,19 @@ function movewalls() {
   if (wall3.x + wall3.w < 0) {
     wall3.x = wall2.x + 500;
     wall3.y = Math.random() * 300 + 100;
+    let randP = Math.random();
+    if (randP < 0.1) {
+      power.x = wall3.x;
+      power.y = Math.random() * 300 + 100;
+      wall3.x += 500;
+    }
   }
 }
+function powerup() {
+  power.x += -wall3.s;
+}
 function collCheck() {
-  if (heli.y < 50 || heli.y > cnv.height - 90) {
+  if (heli.y < shrink.y || heli.y + heli.h > cnv.height - shrink.y) {
     gameover();
   }
   if (
@@ -106,6 +120,34 @@ function collCheck() {
   ) {
     gameover();
   }
+  if (
+    heli.y + heli.h > power.y &&
+    heli.y < power.y + power.h &&
+    heli.x + heli.w > power.x &&
+    heli.x < power.x + power.w
+  ) {
+    dis += dis;
+    power.x = -50;
+    shrink.var = false;
+  }
+}
+function blockevent() {
+  if (dis > 20000) {
+    block.x += -2;
+    if (block.x < 550) {
+      block.x = 550;
+    }
+  }
+  if (dis % 1000 == 0 && dis % 2000 != 0) {
+    shrink.var = true;
+  } else if (dis % 1000 == 0) {
+    shrink.var = false;
+  }
+  if (shrink.var) {
+    shrink.y += 0.05;
+  } else {
+    shrink.y = 50;
+  }
 }
 function gameover() {
   explo.play();
@@ -121,8 +163,8 @@ function drawGame() {
 
   // Green Bars
   ctx.fillStyle = "green";
-  ctx.fillRect(0, 0, cnv.width, 50);
-  ctx.fillRect(0, cnv.height - 50, cnv.width, 50);
+  ctx.fillRect(0, 0, cnv.width, shrink.y);
+  ctx.fillRect(0, cnv.height - shrink.y, cnv.width, shrink.y);
 
   // Green Bar Text
   ctx.font = "30px Consolas";
@@ -139,6 +181,13 @@ function drawGame() {
   ctx.fillRect(wall1.x, wall1.y, wall1.w, wall1.h);
   ctx.fillRect(wall2.x, wall2.y, wall2.w, wall2.h);
   ctx.fillRect(wall3.x, wall3.y, wall3.w, wall3.h);
+
+  //Power Up
+  ctx.drawImage(PU, power.x, power.y, power.w, power.h);
+
+  //block
+  ctx.fillStyle = "grey";
+  ctx.fillRect(block.x, block.y, 800, 500);
 }
 
 // Draw Game Over Screen
@@ -149,8 +198,8 @@ function drawGameOver() {
 
   // Green Bars
   ctx.fillStyle = "green";
-  ctx.fillRect(0, 0, cnv.width, 50);
-  ctx.fillRect(0, cnv.height - 50, cnv.width, 50);
+  ctx.fillRect(0, 0, cnv.width, shrink.y);
+  ctx.fillRect(0, cnv.height - shrink.y, cnv.width, shrink.y);
 
   // Green Bar Text
   ctx.font = "30px Consolas";
@@ -161,6 +210,9 @@ function drawGameOver() {
 
   // Helicopter
   ctx.drawImage(heliImg, heli.x, heli.y);
+
+  //Power Up
+  ctx.drawImage(PU, power.x, power.y, power.w, power.h);
 
   // Draw Wall 1
   ctx.fillStyle = "green";
@@ -214,6 +266,20 @@ function reset() {
     s: 3,
   };
   dis = 0;
+  power = {
+    x: -50,
+    y: Math.random() * 300 + 100,
+    w: 40,
+    h: 40,
+  };
+  block = {
+    x: 800,
+    y: 50,
+  };
+  shrink = {
+    y: 50,
+    var: false,
+  };
 }
 
 function drawWalls() {}

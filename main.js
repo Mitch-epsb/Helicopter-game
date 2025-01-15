@@ -9,6 +9,8 @@ cnv.height = 600;
 // Global Variables
 let heliImg = document.createElement("img");
 heliImg.src = "img/heliBlueTransparent.png";
+let PU = document.createElement("img");
+PU.src = "img/noFilter.png";
 let explo = document.createElement("audio");
 explo.src = "sound/explosion.wav";
 let propeller = document.createElement("audio");
@@ -20,6 +22,9 @@ let state;
 let heli;
 let wall1, wall2, wall3;
 let dis;
+let power;
+let block;
+let shrink;
 reset();
 
 // Draw Function
