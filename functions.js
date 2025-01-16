@@ -135,7 +135,7 @@ function blockevent() {
   if (dis > 20000) {
     block.x += -2;
     if (block.x < 250 && dis < 100000) {
-      block.x = 550;
+      block.x = 250;
     } else if (block.x < 550) {
       block.x = 550;
     }
@@ -147,7 +147,7 @@ function blockevent() {
   }
   if (shrink.var) {
     shrink.y += 0.05;
-  } else if (shrink.y > 50) {
+  } else if (shrink.y > 55) {
     shrink.y += -20;
   }
 }
