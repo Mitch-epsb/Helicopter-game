@@ -134,7 +134,9 @@ function collCheck() {
 function blockevent() {
   if (dis > 20000) {
     block.x += -2;
-    if (block.x < 550) {
+    if (block.x < 250 && dis < 100000) {
+      block.x = 550;
+    } else if (block.x < 550) {
       block.x = 550;
     }
   }
@@ -145,8 +147,8 @@ function blockevent() {
   }
   if (shrink.var) {
     shrink.y += 0.05;
-  } else {
-    shrink.y = 50;
+  } else if (shrink.y > 50) {
+    shrink.y += -20;
   }
 }
 function gameover() {
